@@ -5,8 +5,7 @@
   "main": "ElectronicShopMongo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node ElectronicShopMongo.js"
-	
+    "start": "node ElectronicShopMongo.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +18,7 @@
   },
   "homepage": "https://github.com/BorisLasker/ElectronicShopB#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "mongoose": "^6.3.3"
   }
 }
