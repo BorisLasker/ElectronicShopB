@@ -18,7 +18,7 @@ app.listen(port);
 console.log('Server started! At http://localhost:' + port);
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/register.html'));
+    res.sendFile(path.join(__dirname + '/login.html'));
 })
 
 app.get('/register', function (req, res) {
