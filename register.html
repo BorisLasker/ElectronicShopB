@@ -27,10 +27,11 @@
 <script>
 $(document).ready(function(){
     var from,to,subject,text;
+    var port = process.env.PORT || "http://localhost:8080";
     $("#send_email").click(function(){     
         to=$("#to").val();     
         $("#message").text("Sending E-mail...Please wait");
-        $.get("http://localhost:8080/send",{to:to},function(data){
+        $.get(port+"/send",{to:to},function(data){
         if(data=="sent")
         {
             $("#message").empty().html("<p>Email is been sent at "+to+" . Please check inbox !</p>");
