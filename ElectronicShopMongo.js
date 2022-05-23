@@ -23,6 +23,7 @@ rand=Math.floor((Math.random() * 100) + 54);
 
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
+    port: port,
     auth: {
         user: "electronicshoptask@gmail.com",
         pass: "electronic1!"
