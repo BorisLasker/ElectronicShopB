@@ -30,7 +30,7 @@ $(document).ready(function(){
     $("#send_email").click(function(){     
         to=$("#to").val();     
         $("#message").text("Sending E-mail...Please wait");
-        $.get("http://localhost:8080/send",{to:to},function(data){
+        $.get("/send",{to:to},function(data){
         if(data=="sent")
         {
             $("#message").empty().html("<p>Email is been sent at "+to+" . Please check inbox !</p>");
@@ -84,9 +84,9 @@ $(document).ready(function(){
                                 </div>
                         
                                 <input class="btn btn-primary btn-user btn-block" type="submit" id="send_email"  
-                                 name="send_email" value="Register Account" onclick="return ValidateForm(to.value,InputPassword.value,RepeatPassword.value)"
+                                 name="send_email" value="Register Account" 
                                  />
-
+<!-- onclick="return ValidateForm(to.value,InputPassword.value,RepeatPassword.value)" -->
                                  <span id="message"></span>
                             </form>
                             <hr>
