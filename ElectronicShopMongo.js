@@ -16,46 +16,13 @@ var MONGODB_URI = process.env.MONGODB_URI ||'mongodb+srv://Boris:braude123@elect
 mongoose.connect(MONGODB_URI)
 var db=mongoose.connection;
 
-app.post('/send-email', function (req, res) {
-    let transporter = nodeMailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            // should be replaced with real sender's account
-            user: 'electronicshoptask@gmail.com',
-            pass: 'electronic1!'
-        }
-    });
-    let mailOptions = {
-        // should be replaced with real recipient's account
-        to: 'boris.laskerr@gmail.com',
-        subject: req.body.subject,
-        text: req.body.message
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message %s sent: %s', info.messageId, info.response);
-    });
-    res.writeHead(301, { Location: 'register.html' });
-    res.end();
-  });
-  
 
 
 
-
-
-
-
-/*
 rand=Math.floor((Math.random() * 100) + 54);
 
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
-    port: port,
     auth: {
         user: "electronicshoptask@gmail.com",
         pass: "electronic1!"
@@ -116,7 +83,7 @@ app.get('/send',function(req,res){
         
 
 
-*/
+
 
 
 
