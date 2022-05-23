@@ -14,9 +14,6 @@ var MONGODB_URI = process.env.MONGODB_URI ||'mongodb+srv://Boris:braude123@elect
 mongoose.connect(MONGODB_URI)
 var db=mongoose.connection;
 
-app.listen(port);
-console.log('Server started! At http://localhost:' + port);
-
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/login.html'));
 })
@@ -83,4 +80,7 @@ app.post('/register', function(req,res){
 
 })
     
+
+app.listen(port);
+console.log('Server started! At http://localhost:' + port);
 
