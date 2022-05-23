@@ -20,6 +20,27 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    var from,to,subject,text;
+    $("#send_email").click(function(){     
+        to=$("#to").val();     
+        $("#message").text("Sending E-mail...Please wait");
+        $.get("http://localhost:8080/send",{to:to},function(data){
+        if(data=="sent")
+        {
+            $("#message").empty().html("<p>Email is been sent at "+to+" . Please check inbox !</p>");
+        }
+
+});
+    });
+});
+</script>
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -48,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user"  name="InputEmail" id="InputEmail"
+                                    <input type="email" class="form-control form-control-user"  name="to" id="to"
                                         placeholder="Email Address">
                                 </div>
                                 <div class="form-group row">
@@ -61,12 +82,12 @@
                                         name="RepeatPassword" id="RepeatPassword" placeholder="Repeat Password">
                                     </div>
                                 </div>
-                            
-                                <input class="btn btn-primary btn-user btn-block" type="submit" id="submitDetails"  
-                                 name="submitDetails" value="Register Account" onclick="return ValidateForm(InputEmail.value,InputPassword.value,RepeatPassword.value)"
+                        
+                                <input class="btn btn-primary btn-user btn-block" type="submit" id="send_email"  
+                                 name="send_email" value="Register Account" onclick="return ValidateForm(to.value,InputPassword.value,RepeatPassword.value)"
                                  />
 
-
+                                 <span id="message"></span>
                             </form>
                             <hr>
                             <div class="text-center">
