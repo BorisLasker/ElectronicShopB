@@ -25,6 +25,18 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
+            $.ajax({
+        url: 'https://electronicshopb.herokuapp.com',
+        type: 'POST',
+        headers: {'Accept': 'application/json;'},
+        data: {
+        "subject": "subject",
+        "message": "some body text"
+        },
+        }).done(function (res) {
+        console.log(res); // it shows your email sent message.
+        });
+        /*
 $(document).ready(function(){
     var from,to,subject,text;
     var port ="http://localhost:8080";
@@ -40,6 +52,7 @@ $(document).ready(function(){
 });
     });
 });
+*/
 </script>
 
 </head>
