@@ -16,8 +16,10 @@ var MONGODB_URI = process.env.MONGODB_URI ||'mongodb+srv://Boris:braude123@elect
 mongoose.connect(MONGODB_URI)
 var db=mongoose.connection;
 
-const bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
+
 const urlEncrypt = require('url-encrypt');
+
 const encryptor = urlEncrypt({secretKey: 'some-secret-key'});
 
 rand=Math.floor((Math.random() * 100) + 54);
