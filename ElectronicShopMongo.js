@@ -7,7 +7,7 @@ app.use(express.static(__dirname));  //specifies the root directory from which t
 app.use(bodyParser.urlencoded({extended:true})); //parsing bodies from URL. extended: true specifies that req.body object will contain values of any type instead of just strings.
 app.use(bodyParser.json()); //for parsing json objects
 var nodemailer = require("nodemailer");
-
+var request = require('request');
 
 
 var mongoose = require("mongoose");
@@ -34,42 +34,12 @@ var smtpTransport = nodemailer.createTransport({
 var rand,mailOptions,host,link;
 
 
-app.get('/send',function(req,res){
-   //read from data base
-   db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, function(err, result) {
-    if (err) throw err;
-    if(!result){
-        
-        rand=Math.floor((Math.random() * 100) + 54);
-        host=req.get('host');
-        link="http://"+req.get('host')+"/verify?id="+rand;
-
-
-        const url = encryptor.encrypt(link);
-
-        mailOptions={
-            to : req.query.to,
-            subject : "Please confirm your Email account",
-            html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
-        }
-        smtpTransport.sendMail(mailOptions, function(error, response){
-        if(error){
-                console.log(error);
-            res.end("error");
-        }else{
-                console.log("Message sent: " + response.message);
-            res.end("sent");
-            }
-    });
-
-    
-    }
-    else {
-        return res.redirect('/register');
-    }   
-  });
+app.post('/send',function(req,res){
+   
 
     });
+
+
     app.get('/verify',function(req,res){
         console.log(req.protocol+":/"+req.get('host'));
         if((req.protocol+"://"+req.get('host'))==("http://"+host))
@@ -115,6 +85,62 @@ app.get('/register', function (req, res) {
 
 //getting data from register
 app.post('/register', function(req,res){
+
+    /*
+// g-recaptcha-response is the key that browser will generate upon form submit.
+  // if its blank or null means user has not selected the captcha, so return the error.
+  
+  // Put your secret key here.
+  var secretKey = "6LcESRYgAAAAABpJ-Jsh9La7kLYOFjJh0yQchYBG";
+  // req.connection.remoteAddress will provide IP address of connected user.
+  var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
+  // Hitting GET request to the URL, Google will respond with success or error scenario.
+  request(verificationUrl,function(error,response,body) {
+    body = JSON.parse(body);
+    // Success will be true or false depending upon captcha validation.
+    if(body.success !== undefined && !body.success) {
+      return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+    }
+    res.json({"responseCode" : 0,"responseDesc" : "Sucess"});
+  });
+
+*/
+/*
+//read from data base
+db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, function(err, result) {
+    
+    if (err) throw err;
+    if(!result){
+        
+        rand=Math.floor((Math.random() * 100) + 54);
+        host=req.get('host');
+        link="http://"+req.get('host')+"/verify?id="+rand;
+
+
+        const url = encryptor.encrypt(link);
+
+        mailOptions={
+            to : req.query.to,
+            subject : "Please confirm your Email account",
+            html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
+        }
+        smtpTransport.sendMail(mailOptions, function(error, response){
+        if(error){
+                console.log(error);
+            res.end("error");
+        }else{
+                console.log("Message sent: " + response.message);
+            res.end("sent");
+            }
+    });
+
+    
+    }
+    else {
+        return res.redirect('/register');
+    }   
+  });
+*/
     var firstname = req.body.FirstName;
     var lastname = req.body.LastName;
     var email = req.body.to;
@@ -131,12 +157,35 @@ app.post('/register', function(req,res){
             "password":hash
         }
         //read from data base
-        db.collection("Users").findOne({_id: email}, function(err, result) {
+        db.collection("Users").findOne({_id: email},{verifyEmail : "true"}, function(err, result) {
             if (err) throw err;
             console.log(result);
     
             if(!result){
-    
+                //send varification email
+                rand=Math.floor((Math.random() * 100) + 54);
+                host=req.get('host');
+                link="http://"+req.get('host')+"/verify?id="+rand;
+        
+        
+                const url = encryptor.encrypt(link);
+        
+                mailOptions={
+                    to : req.body.to,
+                    subject : "Please confirm your Email account",
+                    html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
+                }
+                smtpTransport.sendMail(mailOptions, function(error, response){
+                if(error){
+                        console.log(error);
+                    res.end("error");
+                }else{
+                        console.log("Message sent: " + response.message);
+                    res.end("sent");
+                    }
+            });
+
+
                 //insert to data base
                   db.collection('Users').insertOne(data,function(err, collection){
                     if (err) throw err;
@@ -144,6 +193,7 @@ app.post('/register', function(req,res){
                 });
             }
             else {
+               
                 return res.redirect('/register');
             }   
           });

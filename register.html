@@ -21,27 +21,56 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
 <script>
-$(document).ready(function(){
-    var from,to,subject,text;
-    $("#send_email").click(function(){     
-        to=$("#to").val();     
-       
-        $.get("/send",{to:to},function(data){
-        if(data=="sent")
-        { 
-            $("#message").text("Sending E-mail...Please wait");
-            $("#message").empty().html("<p>Email is been sent at "+to+" . Please check inbox !</p>");
-        }
-
-});
+    $(document).ready(function() {
+      $('#comment_form').submit(function() {
+        $(this).ajaxSubmit({
+          error: function(xhr) {
+            status('Error: ' + xhr.status);
+          },
+         success: function(response) {
+          console.log(response);
+         }
+        });
+        //Very important line, it disable the page refresh.
+        return false;
+      });
     });
-});
-</script>
+  </script>
+<script>
+   /*
+    $(document).ready(function(){
+        var from,to,subject,text;
+        $("#send_email").click(function(){     
+            to=$("#to").val();   
+            InputPassword=$("#InputPassword").val();
+            RepeatPassword=$("#RepeatPassword").val();
+            var flag=ValidateForm(to,InputPassword,RepeatPassword);
+            if(flag){
+                
+            
+            $.get("/send",{to:to},function(data){
+            if(data=="sent")
+            { 
+                $("#message").text("Sending E-mail...Please wait");
+                $("#message").empty().html("<p>Email is been sent at "+to+" . Please check inbox !</p>");
+            }
 
+        });
+    }
+    else
+    alert("wrong");
+        });
+    });
+    */
+</script>
 </head>
 
 <body class="bg-gradient-primary">
@@ -58,7 +87,7 @@ $(document).ready(function(){
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <form class="user" action="/register" method="post">
+                            <form class="user"  id="comment_form" action="/register" method="post">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user"  name="FirstName" id="FirstName"
@@ -83,14 +112,17 @@ $(document).ready(function(){
                                         name="RepeatPassword" id="RepeatPassword" placeholder="Repeat Password">
                                     </div>
                                 </div>
-                        
+                                <br>
+                                <div class="g-recaptcha" data-sitekey="6LcESRYgAAAAAF5xz55fmjQp3TNRymMQNJD-S4Qh"></div>
+                                <br>
                                 <input class="btn btn-primary btn-user btn-block" type="submit" id="send_email"  
-                                 name="send_email" value="Register Account" 
+                                 name="send_email" value="Register Account" onclick ="return ValidateForm(to.value,InputPassword.value,RepeatPassword.value)"
                                  />
 <!-- onclick="return ValidateForm(to.value,InputPassword.value,RepeatPassword.value)" -->
                                  <span id="message"></span>
                             </form>
                             <hr>
+                            
                             <div class="text-center">
                                 <a class="small" href="forgot-password.html">Forgot Password?</a>
                             </div>

@@ -1,16 +1,24 @@
 function ValidateForm(email,pass,repass){
 
+    var response = grecaptcha.getResponse();
+    if(response.length == 0){
+      alert("Please verify that you are a Human");
+      return false;
+    }
+    
     var flag= ValidateEmail(email)&&CheckPassword(pass)&&CheckPassMatch(pass,repass);
     if (flag){ 
 
       
         alert('You succeeded!\nPlease check your mail address.')
+
+
+        
         window.location.href = "login.html";
         return true;
     }
     return false;
-}
-
+  }
 
 function CheckPassMatch(pass,repass){
 
