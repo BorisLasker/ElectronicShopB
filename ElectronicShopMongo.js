@@ -50,7 +50,6 @@ app.get('/send',function(req,res){
             subject : "Please confirm your Email account",
             html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
         }
-        console.log(mailOptions);
         smtpTransport.sendMail(mailOptions, function(error, response){
         if(error){
                 console.log(error);
