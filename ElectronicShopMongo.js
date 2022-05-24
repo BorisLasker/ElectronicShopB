@@ -17,8 +17,8 @@ mongoose.connect(MONGODB_URI)
 var db=mongoose.connection;
 
 const bcrypt = require('bcrypt');
-var encrypt;
-
+const urlEncrypt = require('url-encrypt');
+const encryptor = urlEncrypt({secretKey: 'some-secret-key'});
 
 rand=Math.floor((Math.random() * 100) + 54);
 
@@ -41,10 +41,14 @@ app.get('/send',function(req,res){
         rand=Math.floor((Math.random() * 100) + 54);
         host=req.get('host');
         link="http://"+req.get('host')+"/verify?id="+rand;
+
+
+        const url = encryptor.encrypt(link);
+
         mailOptions={
             to : req.query.to,
             subject : "Please confirm your Email account",
-            html : "Hello,Please Click on the link to verify your account."+link+">Click here to verify"
+            html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
         }
         console.log(mailOptions);
         smtpTransport.sendMail(mailOptions, function(error, response){
