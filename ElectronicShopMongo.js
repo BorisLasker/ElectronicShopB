@@ -16,8 +16,9 @@ var MONGODB_URI = process.env.MONGODB_URI ||'mongodb+srv://Boris:braude123@elect
 mongoose.connect(MONGODB_URI)
 var db=mongoose.connection;
 
-
-
+const bcrypt = require('bcrypt');
+const urlEncrypt = require('url-encrypt');
+const encryptor = urlEncrypt({secretKey: 'some-secret-key'});
 
 rand=Math.floor((Math.random() * 100) + 54);
 
@@ -32,24 +33,45 @@ var rand,mailOptions,host,link;
 
 
 app.get('/send',function(req,res){
-    rand=Math.floor((Math.random() * 100) + 54);
-    host=req.get('host');
-    link="http://"+req.get('host')+"/verify?id="+rand;
-    mailOptions={
-        to : req.query.to,
-        subject : "Please confirm your Email account",
-        html : "Hello,Please Click on the link to verify your email."+link+">Click here to verify"
-    }
-    console.log(mailOptions);
-    smtpTransport.sendMail(mailOptions, function(error, response){
-    if(error){
-            console.log(error);
-        res.end("error");
-    }else{
-            console.log("Message sent: " + response.message);
-        res.end("sent");
+   //read from data base
+   db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, function(err, result) {
+    if (err) throw err;
+    if(!result){
+        
+        rand=Math.floor((Math.random() * 100) + 54);
+        host=req.get('host');
+        link="http://"+req.get('host')+"/verify?id="+rand;
+
+
+        const url = encryptor.encrypt(link);
+
+        mailOptions={
+            to : req.query.to,
+            subject : "Please confirm your Email account",
+            html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
         }
+        console.log(mailOptions);
+        smtpTransport.sendMail(mailOptions, function(error, response){
+        if(error){
+                console.log(error);
+            res.end("error");
+        }else{
+                console.log("Message sent: " + response.message);
+            res.end("sent");
+            }
     });
+
+    
+    }
+    else {
+        return res.redirect('/register');
+    }   
+  });
+
+
+
+
+
     });
 
 
@@ -102,57 +124,53 @@ app.post('/register', function(req,res){
     var lastname = req.body.LastName;
     var email = req.body.to;
     var pass = req.body.InputPassword;
-    var data = {
-        "_id": email,
-        "first_name": firstname,
-        "last_name" : lastname,
-        "password":pass
 
-    }
-    //read from data base
-    db.collection("Users").findOne({_id: email}, function(err, result) {
-        if (err) throw err;
-        console.log(result);
 
-        if(!result){
+    // To encrypt passwords use bcrypt
+    bcrypt.hash(pass, 12).then(hash => {
 
-            //insert to data base
-              db.collection('Users').insertOne(data,function(err, collection){
-                if (err) throw err;
-
-                return res.redirect('/register');
-            });
+        var data = {
+            "_id": email,
+            "first_name": firstname,
+            "last_name" : lastname,
+            "password":hash
         }
-        else {
-
-            
-            return res.redirect('/register');
-        } 
-        
-      });
-
-    
-
-/*
-            //update data base
-      db.collection("Users").updateOne({_id: email},{$set : {last_name : "cohen",first_name : "moshe",address : "haifa"}}, function(err, result) {
-        if (err) throw err;
-        console.log(result);
-    })
-    
-*/
-
-/*
-        //delete one from data base
-        db.collection("Users").deleteOne({first_name: "sds"}, function(err, result) {
+        //read from data base
+        db.collection("Users").findOne({_id: email}, function(err, result) {
             if (err) throw err;
             console.log(result);
-        })
-*/
-
-})
     
+            if(!result){
+    
+                //insert to data base
+                  db.collection('Users').insertOne(data,function(err, collection){
+                    if (err) throw err;
+                    return res.redirect('/register');
+                });
+            }
+            else {
+                return res.redirect('/register');
+            }   
+          });
+        });
+});
 
 app.listen(port);
 console.log('Server started! At http://localhost:' + port);
 
+    /*
+                //update data base
+          db.collection("Users").updateOne({_id: email},{$set : {last_name : "cohen",first_name : "moshe",address : "haifa"}}, function(err, result) {
+            if (err) throw err;
+            console.log(result);
+        })
+        
+    */
+    
+    /*
+            //delete one from data base
+            db.collection("Users").deleteOne({first_name: "sds"}, function(err, result) {
+                if (err) throw err;
+                console.log(result);
+            })
+    */
