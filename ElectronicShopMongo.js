@@ -82,6 +82,9 @@ app.get('/register', function (req, res) {
     res.sendFile(path.join(__dirname + '/register.html'));
 })
 
+app.get('/forgot-password', function (req, res) {
+    res.sendFile(path.join(__dirname + '/forgot-password.html'));
+})
 
 //getting data from register
 app.post('/register', function(req,res){
@@ -200,6 +203,40 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
         });
 });
 
+
+        
+//getting data from forgot password 
+app.post('/forgot-password', function(req,res){
+
+    var femail = req.body.forgotemail;
+    db.collection("Users").findOne({_id: femail}, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        if(result){
+            rand=Math.floor((Math.random() * 100) + 54);
+            host=req.get('host');
+            link="http://"+req.get('host')+"/verify?id="+rand;
+                    
+            const url = encryptor.encrypt(link);
+        
+            mailOptions={
+                to : femail,
+                subject : "Please confirm your Email account",
+                html : "Hello,Please Click on the link to change your password."+url+">Click here to change"
+            }
+            smtpTransport.sendMail(mailOptions, function(error, response){
+                if(error){
+                        console.log(error);
+                    res.end("error");
+                }else{
+                        console.log("Message sent: " + response.message);
+                    res.end("sent");
+                    }
+            });
+        }
+    });
+    
+});
 app.listen(port);
 console.log('Server started! At http://localhost:' + port);
 
