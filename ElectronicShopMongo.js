@@ -89,61 +89,6 @@ app.get('/forgot-password', function (req, res) {
 //getting data from register
 app.post('/register', function(req,res){
 
-    /*
-// g-recaptcha-response is the key that browser will generate upon form submit.
-  // if its blank or null means user has not selected the captcha, so return the error.
-  
-  // Put your secret key here.
-  var secretKey = "6LcESRYgAAAAABpJ-Jsh9La7kLYOFjJh0yQchYBG";
-  // req.connection.remoteAddress will provide IP address of connected user.
-  var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
-  // Hitting GET request to the URL, Google will respond with success or error scenario.
-  request(verificationUrl,function(error,response,body) {
-    body = JSON.parse(body);
-    // Success will be true or false depending upon captcha validation.
-    if(body.success !== undefined && !body.success) {
-      return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
-    }
-    res.json({"responseCode" : 0,"responseDesc" : "Sucess"});
-  });
-
-*/
-/*
-//read from data base
-db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, function(err, result) {
-    
-    if (err) throw err;
-    if(!result){
-        
-        rand=Math.floor((Math.random() * 100) + 54);
-        host=req.get('host');
-        link="http://"+req.get('host')+"/verify?id="+rand;
-
-
-        const url = encryptor.encrypt(link);
-
-        mailOptions={
-            to : req.query.to,
-            subject : "Please confirm your Email account",
-            html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
-        }
-        smtpTransport.sendMail(mailOptions, function(error, response){
-        if(error){
-                console.log(error);
-            res.end("error");
-        }else{
-                console.log("Message sent: " + response.message);
-            res.end("sent");
-            }
-    });
-
-    
-    }
-    else {
-        return res.redirect('/register');
-    }   
-  });
-*/
     var firstname = req.body.FirstName;
     var lastname = req.body.LastName;
     var email = req.body.to;
@@ -157,14 +102,17 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
             "_id": email,
             "first_name": firstname,
             "last_name" : lastname,
-            "password":hash
+            "password":hash,
+            "verifyEmail":false
         }
         //read from data base
-        db.collection("Users").findOne({_id: email},{verifyEmail : "true"}, function(err, result) {
+        db.collection("Users").findOne({_id: email}, function(err, result) {
             if (err) throw err;
             console.log(result);
-    
-            if(!result){
+           
+
+    //insert user to db
+            if(result == null){
                 //send varification email
                 rand=Math.floor((Math.random() * 100) + 54);
                 host=req.get('host');
@@ -188,16 +136,39 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
                     }
             });
 
-
                 //insert to data base
                   db.collection('Users').insertOne(data,function(err, collection){
                     if (err) throw err;
-                    return res.redirect('/register');
+                    return res.redirect('/login');
                 });
             }
             else {
+                if(result.verifyEmail == false){
+                    //send varification email again
+                    rand=Math.floor((Math.random() * 100) + 54);
+                    host=req.get('host');
+                    link="http://"+req.get('host')+"/verify?id="+rand;
+            
+            
+                    const url = encryptor.encrypt(link);
+            
+                    mailOptions={
+                        to : req.body.to,
+                        subject : "Please confirm your Email account",
+                        html : "Hello,Please Click on the link to verify your account."+url+">Click here to verify"
+                    }
+                    smtpTransport.sendMail(mailOptions, function(error, response){
+                    if(error){
+                            console.log(error);
+                        res.end("error");
+                    }else{
+                            console.log("Message sent: " + response.message);
+                        res.end("sent");
+                        }
+                });
+           }
                
-                return res.redirect('/register');
+                return res.redirect('/login');
             }   
           });
         });
