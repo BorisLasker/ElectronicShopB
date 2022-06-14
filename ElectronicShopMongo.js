@@ -164,6 +164,7 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
             if (err) throw err;
             console.log(result);
     
+            //if the user is not in the database
             if(!result){
                 //send varification email
                 rand=Math.floor((Math.random() * 100) + 54);
