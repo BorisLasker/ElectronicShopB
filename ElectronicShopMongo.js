@@ -159,13 +159,13 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
             "last_name" : lastname,
             "password":hash
         }
-     
         //read from data base
-        db.collection("Users").findOne({_id: email} , {verifyEmail : true} , function(err, result) {
+        db.collection("Users").findOne({_id: email},{verifyEmail : "true"}, function(err, result) {
             if (err) throw err;
             console.log(result);
-
-             //send varification email
+    
+            if(!result){
+                //send varification email
                 rand=Math.floor((Math.random() * 100) + 54);
                 host=req.get('host');
                 link="http://"+req.get('host')+"/verify?id="+rand;
@@ -181,18 +181,13 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
                 smtpTransport.sendMail(mailOptions, function(error, response){
                 if(error){
                         console.log(error);
-                        res.end("error");
+                    res.end("error");
                 }else{
                         console.log("Message sent: " + response.message);
                     res.end("sent");
                     }
             });
 
-            
-    
-            //if the user is not in the database
-            if(result == null){
-               
 
                 //insert to data base
                   db.collection('Users').insertOne(data,function(err, collection){
@@ -204,11 +199,8 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
                
                 return res.redirect('/register');
             }   
-        
+          });
         });
-
-
-    });
 });
 
 
@@ -217,21 +209,19 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
 app.post('/forgot-password', function(req,res){
 
     var femail = req.body.forgotemail;
-    console.log(femail);
-    db.collection("Users").findOne({_id: femail},{verifyEmail : "true"}, function(err, result)  {
+    db.collection("Users").findOne({_id: femail}, function(err, result) {
         if (err) throw err;
-        if(result)
-        {
+        console.log(result);
+        if(result){
             rand=Math.floor((Math.random() * 100) + 54);
             host=req.get('host');
-            console.log(host);
             link="http://"+req.get('host')+"/verify?id="+rand;
                     
             const url = encryptor.encrypt(link);
         
             mailOptions={
-                to : req.body.forgotemail,
-                subject : "Change password request",
+                to : femail,
+                subject : "Please confirm your Email account",
                 html : "Hello,Please Click on the link to change your password."+url+">Click here to change"
             }
             smtpTransport.sendMail(mailOptions, function(error, response){
@@ -243,7 +233,6 @@ app.post('/forgot-password', function(req,res){
                     res.end("sent");
                     }
             });
-
         }
     });
     
