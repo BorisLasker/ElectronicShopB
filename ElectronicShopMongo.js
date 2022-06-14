@@ -159,14 +159,13 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
             "last_name" : lastname,
             "password":hash
         }
+     
         //read from data base
-        db.collection("Users").findOne({_id: email},{verifyEmail : "true"}, function(err, result) {
+        db.collection("Users").findOne({_id: email} , {verifyEmail : true} , function(err, result) {
             if (err) throw err;
             console.log(result);
-    
-            //if the user is not in the database
-            if(!result){
-                //send varification email
+
+             //send varification email
                 rand=Math.floor((Math.random() * 100) + 54);
                 host=req.get('host');
                 link="http://"+req.get('host')+"/verify?id="+rand;
@@ -189,6 +188,11 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
                     }
             });
 
+            
+    
+            //if the user is not in the database
+            if(result == null){
+               
 
                 //insert to data base
                   db.collection('Users').insertOne(data,function(err, collection){
@@ -200,8 +204,11 @@ db.collection("Users").findOne({_id: req.query.to},{verifyEmail : "true"}, funct
                
                 return res.redirect('/register');
             }   
-          });
+        
         });
+
+
+    });
 });
 
 
