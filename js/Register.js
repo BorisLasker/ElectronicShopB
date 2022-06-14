@@ -58,3 +58,4 @@ function ValidateEmail(mail)
     return false;
   }
 }
+
