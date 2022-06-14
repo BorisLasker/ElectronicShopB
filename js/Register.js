@@ -10,7 +10,7 @@ function ValidateForm(email,pass,repass){
     if (flag){ 
 
       
-        alert('You succeeded!\nPlease check your mail address.')
+        alert('You succeeded!\nPlease check your mail address.');
 
 
         
@@ -50,6 +50,7 @@ function ValidateEmail(mail)
   var mailformat =/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   if(mail.match(mailformat))
   {
+      alert('You succeeded!\nPlease check your mail address.');
       return true;
   }
   else
@@ -57,5 +58,14 @@ function ValidateEmail(mail)
     alert("You have entered an invalid email address!");    //The pop up alert for an invalid email address
     return false;
   }
+}
+
+function ValidatePassword(pass,repass){
+  var flag= CheckPassword(pass)&&CheckPassMatch(pass,repass);
+  if (flag){ 
+      alert('You succeeded!\nYour password changed!');
+      return true;
+  }
+  return false;
 }
 

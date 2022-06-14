@@ -24,6 +24,8 @@ const encryptor = urlEncrypt({secretKey: 'some-secret-key'});
 
 rand=Math.floor((Math.random() * 100) + 54);
 
+var passwordChangeEmail; //used for update password
+
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -70,8 +72,26 @@ app.post('/send',function(req,res){
         
 
 
-
-
+app.get('/changepassword',function(req,res){
+    console.log(req.protocol+":/"+req.get('host'));
+    if((req.protocol+"://"+req.get('host'))==("http://"+host))
+    {
+        console.log("Domain is matched. Information is from Authentic email");
+        if(req.query.id==rand)
+        {
+            res.sendFile(path.join(__dirname + '/changepassword.html'));
+        }
+        else
+        {
+            console.log("email is not verified");
+            res.end("Bad Request ");
+        }
+    }
+    else
+    {
+        res.end("Request is from unknown source");
+    }
+    });
 
 
 app.get('/', function (req, res) {
@@ -84,6 +104,10 @@ app.get('/register', function (req, res) {
 
 app.get('/forgot-password', function (req, res) {
     res.sendFile(path.join(__dirname + '/forgot-password.html'));
+})
+
+app.get('/login', function (req, res) {
+    res.sendFile(path.join(__dirname + '/login.html'));
 })
 
 //getting data from register
@@ -180,19 +204,20 @@ app.post('/register', function(req,res){
 app.post('/forgot-password', function(req,res){
 
     var femail = req.body.forgotemail;
-    db.collection("Users").findOne({_id: femail}, function(err, result) {
+    console.log(femail);
+    db.collection("Users").findOne({_id: femail},{verifyEmail : "true"}, function(err, result)  {
         if (err) throw err;
-        console.log(result);
-        if(result){
+        if(result)
+        {
             rand=Math.floor((Math.random() * 100) + 54);
             host=req.get('host');
-            link="http://"+req.get('host')+"/verify?id="+rand;
-                    
+            console.log(host);
+            link="http://"+req.get('host')+"/changepassword?id="+rand;      
             const url = encryptor.encrypt(link);
         
             mailOptions={
-                to : femail,
-                subject : "Please confirm your Email account",
+                to : req.body.forgotemail,
+                subject : "Change password request",
                 html : "Hello,Please Click on the link to change your password."+url+">Click here to change"
             }
             smtpTransport.sendMail(mailOptions, function(error, response){
@@ -200,14 +225,34 @@ app.post('/forgot-password', function(req,res){
                         console.log(error);
                     res.end("error");
                 }else{
+                        passwordChangeEmail = req.body.forgotemail;
                         console.log("Message sent: " + response.message);
-                    res.end("sent");
+                        return res.redirect('/forgot-password');
                     }
             });
+
         }
     });
     
 });
+
+
+app.post('/changepassword', function(req,res){
+
+    var femail = passwordChangeEmail;
+    var pass = req.body.InputPassword;
+    console.log(femail);
+
+    bcrypt.hash(pass, 12).then(hash => {
+        db.collection("Users").updateOne({_id: femail},{$set : {password : hash}}, function(err, result) {
+           if (err) throw err;
+           console.log(result);
+           return res.redirect('/login');
+       })
+    });
+
+});
+
 app.listen(port);
 console.log('Server started! At http://localhost:' + port);
 
