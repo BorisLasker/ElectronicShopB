@@ -129,12 +129,20 @@ app.get('/cell', function (req, res) {
 app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
+app.get('/profile', function (req, res) {
+    res.render('prof.ejs',{firstname: "Shahar Almog"});
+})
 /*
 app.all('*', (req, res) => {
     return res.redirect('/404');
   });
 
 */
+
+
+
+
+
 //getting data from register
 app.post('/register', function(req,res){
     var firstname = req.body.FirstName;
@@ -232,8 +240,14 @@ app.post('/register', function(req,res){
         });
 });
 
+//getting data from forgot password 
+app.post('/profile', function(req,res){
 
-        
+    console.log("here");
+
+
+
+});
 //getting data from forgot password 
 app.post('/forgot-password', function(req,res){
 
