@@ -50,7 +50,7 @@ function ValidateEmail(mail)
   var mailformat =/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   if(mail.match(mailformat))
   {
-      alert('You succeeded!\nPlease check your mail address.');
+
       return true;
   }
   else
@@ -68,4 +68,3 @@ function ValidatePassword(pass,repass){
   }
   return false;
 }
-

@@ -132,6 +132,15 @@ app.get('/404', function (req, res) {
 app.get('/profile', function (req, res) {
     res.render('prof.ejs',{firstname: "Shahar Almog"});
 })
+
+app.get('/emailsent', function (req, res) {
+    res.sendFile(path.join(__dirname + '/emailsent.html'));
+})
+
+app.get('/noemail', function (req, res) {
+    res.sendFile(path.join(__dirname + '/noemail.html'));
+})
+
 /*
 app.all('*', (req, res) => {
     return res.redirect('/404');
@@ -253,9 +262,9 @@ app.post('/forgot-password', function(req,res){
 
     var femail = req.body.forgotemail;
     console.log(femail);
-    db.collection("Users").findOne({_id: femail},{verifyEmail : "true"}, function(err, result)  {
+    db.collection("Users").findOne({_id: femail}, function(err, result)  {
         if (err) throw err;
-        if(result)
+        if(result.verifyEmail)
         {
             rand=Math.floor((Math.random() * 100) + 54);
             host=req.get('host');
@@ -275,10 +284,13 @@ app.post('/forgot-password', function(req,res){
                 }else{
                         passwordChangeEmail = req.body.forgotemail;
                         console.log("Message sent: " + response.message);
-                        return res.redirect('/forgot-password');
+                        return res.redirect('/emailsent');
                     }
             });
 
+        }
+        else{
+            return res.redirect('/noemail');
         }
     });
     
@@ -295,9 +307,24 @@ app.post('/changepassword', function(req,res){
         db.collection("Users").updateOne({_id: femail},{$set : {password : hash}}, function(err, result) {
            if (err) throw err;
            console.log(result);
-           return res.redirect('/login');
+           mailOptions={
+               to : femail,
+               subject : "Password Updated",
+               html : "Hello,your password updated successfully."
+           }
+           smtpTransport.sendMail(mailOptions, function(error, response){
+               if(error){
+                       console.log(error);
+                   res.end("error");
+               }else{
+                       passwordChangeEmail = req.body.forgotemail;
+                       console.log("Message sent: " + response.message);
+                       return res.redirect('/login');
+                   }
+           });
        })
     });
+
 
 });
 
