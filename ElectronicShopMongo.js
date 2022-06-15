@@ -125,6 +125,16 @@ app.get('/pc', function (req, res) {
 app.get('/cell', function (req, res) {
     res.render('cell.ejs',{name: "Shahar Almog"});
 })
+
+app.get('/404', function (req, res) {
+    res.sendFile(path.join(__dirname + '/404.html'));
+})
+
+app.all('*', (req, res) => {
+    return res.redirect('/404');
+  });
+
+
 //getting data from register
 app.post('/register', function(req,res){
 
