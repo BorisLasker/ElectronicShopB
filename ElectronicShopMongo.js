@@ -129,19 +129,26 @@ app.get('/cell', function (req, res) {
 app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
-
+/*
 app.all('*', (req, res) => {
     return res.redirect('/404');
   });
 
-
+*/
 //getting data from register
 app.post('/register', function(req,res){
-
     var firstname = req.body.FirstName;
     var lastname = req.body.LastName;
     var email = req.body.to;
     var pass = req.body.InputPassword;
+    var promocode = req.body.PromoCode;
+
+    db.collection("PromoCode").findOne({PromoCode: promocode}, function(err, resultPromocode) {
+        if (err) throw err;
+        if(!resultPromocode){
+            promocode="";
+        }
+    });
 
 
     // To encrypt passwords use bcrypt
@@ -152,7 +159,9 @@ app.post('/register', function(req,res){
             "first_name": firstname,
             "last_name" : lastname,
             "password":hash,
-            "verifyEmail":false
+            "verifyEmail":false,
+            "PromoCode":promocode
+            
         }
         //read from data base
         db.collection("Users").findOne({_id: email}, function(err, result) {
