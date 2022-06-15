@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended:true})); //parsing bodies from URL. exte
 app.use(bodyParser.json()); //for parsing json objects
 var nodemailer = require("nodemailer");
 var request = require('request');
-
+app.set('view-engine','ejs');
 
 var mongoose = require("mongoose");
 const { verify } = require("crypto");
@@ -108,6 +108,14 @@ app.get('/forgot-password', function (req, res) {
 
 app.get('/login', function (req, res) {
     res.sendFile(path.join(__dirname + '/login.html'));
+})
+
+app.get('/dashboard', function (req, res) {
+    res.render('index.ejs',{name: "Shahar Almog"});
+})
+
+app.get('/about', function (req, res) {
+    res.render('about.ejs',{name: "Shahar Almog"});
 })
 
 //getting data from register
