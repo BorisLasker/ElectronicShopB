@@ -118,6 +118,13 @@ app.get('/about', function (req, res) {
     res.render('about.ejs',{name: "Shahar Almog"});
 })
 
+app.get('/pc', function (req, res) {
+    res.render('pc.ejs',{name: "Shahar Almog"});
+})
+
+app.get('/cell', function (req, res) {
+    res.render('cell.ejs',{name: "Shahar Almog"});
+})
 //getting data from register
 app.post('/register', function(req,res){
 
