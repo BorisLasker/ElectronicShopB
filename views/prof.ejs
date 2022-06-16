@@ -148,66 +148,66 @@
                     <div class="row">
                         <h5 style="color:black; font-weight: bold; margin-left:3%">Profile details</h5>
                     </div>
+                    <form class="user"  id="comment_form" action="/updateProfile" method="post">
                     <div class="row">
                         <div class="col-lg-3 mb-3">
                             <span>First name</span>
-                            <br><input class="form-control form-control-user" type="text" id="firstName"
-                                placeholder="----">
+                            <br><input class="form-control form-control-user" type="text" name="firstName" id="firstName"
+                                placeholder="----" value=<%=firstname%>>
                         </div>
 
                         <div class="col-lg-3 mb-3">
                             <span>Last name</span>
-                            <br><input class="form-control form-control-user" type="text" id="lastName"
-                                placeholder="----">
+                            <br><input class="form-control form-control-user" type="text" name="lastName" id="lastName"
+                                placeholder="----" value=<%=lastname%>>
 
 
                         </div>
                         <div class="col-lg-3 mb-3">
 
                             <span>Phone number</span>
-                            <br><input class="form-control form-control-user" type="text" id="phoneNum"
-                                placeholder="----">
+                            <br><input class="form-control form-control-user" type="text" name="phoneNum" id="phoneNum"
+                                placeholder="----" value=<%=phonenum%>>
 
                         </div>
                         <div class="col-lg-3 mb-3">
 
                             <span>Country</span>
-                            <br><input class="form-control form-control-user" type="text" id="country"
-                                placeholder="----">
+                            <br><input class="form-control form-control-user" type="text" name="country" id="country"
+                                placeholder="----" value=<%=country%>>
                         </div>
                     </div>
 
                     <!--Secend row-->
-                    <div class="row" action="/profile" method="post">
+                    <div class="row" >
                         <div class="col-lg-3 mb-3">
                             <span>E-mail</span>
-                            <br><input class="form-control form-control-user" type="Email" id="email"
-                                title="Enter valid email with @, phone, or username" placeholder="----">
+                            <br><input class="form-control form-control-user" type="Email" name="email" id="email"
+                                title="Enter valid email with @, phone, or username" placeholder="----" value=<%=email%>>
                         </div>
 
                         <div class="col-lg-3 mb-3">
                             <span>City</span>
-                            <br><input class="form-control form-control-user" type="text" id="city" placeholder="----">
-
-
+                            <br><input class="form-control form-control-user" type="text"name="city" id="city" placeholder="----" value=<%=city%>>
                         </div>
                         <div class="col-lg-3 mb-3">
 
                             <span>Street</span>
-                            <br><input class="form-control form-control-user" type="text" id="street"
-                                placeholder="----">
+                            <br><input class="form-control form-control-user" type="text" name="street" id="street"
+                                placeholder="----" value=<%=street%>>
 
                         </div>
                         <div class="col-lg-3 mb-3">
 
                             <span>Zip code</span>
-                            <br><input class="form-control form-control-user" type="text" id="zipCode"
-                                placeholder="----">
+                            <br><input class="form-control form-control-user" type="text" name="zipCode" id="zipCode"
+                                placeholder="----" value=<%=zipcode%>>
                         </div>
 
-                        <button id="updateBtn" style="margin-left: 94%;" type="button"
-                            class="btn btn-success">Update!</button>
+                        <button style="margin-left: 94%;" type="submit"
+                            class="btn btn-success">Update!</button> 
                     </div>
+                    </form>
                     <hr class="sidebar-divider">
 
                     <!--The row of the changig password section-->
@@ -341,33 +341,21 @@
     <script src="/js/sb-admin-2.js"></script>
 
     <script>
+
         $(document).ready(function () {
             var newData;
             var user;
-            
+            console.log("1");
             $.post('/getProfile')
                 .done(function (data) {
                     user = data;
-                    console.log(user.lastName)
-                    $('#nameOfUser').text(user.firstName);
-                    $('#firstName').val(user.firstName);
-                    $('#lastName').val(user.lastName)
-                    $('#email').val(user.email);
-                    if (user.phone != null)
-                        $('#phoneNum').val(user.phone);
-                    if (user.country != null)
-                        $('#country').val(user.country);
-                    if (user.city != null)
-                        $('#city').val(user.city);
-                    if (user.street != null)
-                        $('#street').val(user.street);
-                    if (user.zipCode != null)
-                        $('#zipCode').val(user.zipCode);
+                    console.log(user);
                 })
             $("#updateBtn").click(function () {
                 var numbers = /[0-9]/g;
+                console.log("1");
                 newData = {
-                    username: $('#firstName').val(),
+                    Firstname: $('#firstName').val(),
                     lastname: $('#lastName').val(),
                     email: $('#email').val(),
                     phone: $('#phoneNum').val(),
@@ -402,6 +390,7 @@
 
                 }
                 else {
+                    console.log("test1");
                     $.post('/updateProfile', { UserName: newData.username, lastName: newData.lastname, email: newData.email, phone: newData.phone, country: newData.country, city: newData.city, street: newData.street, zipCode: newData.zipCode, prevEmail: user.email, Id: user.id })
                         .done(function (data) {
                             $('#successModal').modal('show');

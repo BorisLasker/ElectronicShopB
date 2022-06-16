@@ -130,7 +130,7 @@ app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
 app.get('/profile', function (req, res) {
-    res.render('prof.ejs',{name: "Shahar Almog"});
+    res.render('prof.ejs',{firstname: "Shahar",lastname: "Almog",phonenum: "123456789",country: "israel",email: "shahar@gmail.com",city:"haifa",street:"sss",zipcode:"12345"});
 })
 
 app.get('/emailsent', function (req, res) {
@@ -149,8 +149,23 @@ app.all('*', (req, res) => {
 */
 
 
+app.post('/updateProfile', function(req,res){
 
+    console.log(req.body.firstName);
+    var firstname = req.body.firstName;
+    var lastname = req.body.lastName;
+    var email = req.body.email;
+    var phone = req.body.phoneNum;
+    var country = req.body.country;
+    var city = req.body.city;
+    var street = req.body.street;
+    var zipcode = req.body.zipCode;
 
+    db.collection("Users").updateOne({_id: "boris.laskerr@gmail.com"},{$set : {first_name: firstname , last_name: lastname , email:email , phone:phone , country:country , city:city , street:street , zipcode:zipcode}}, function(err, result) {
+        if (err) throw err;
+
+});
+});
 
 //getting data from register
 app.post('/register', function(req,res){
@@ -251,14 +266,25 @@ app.post('/register', function(req,res){
         });
 });
 
-//getting data from forgot password 
-app.post('/profile', function(req,res){
+app.post('/getProfile', async function (req, reso) {
+    db.collection("Users").findOne({_id: "boris.laskerr@gmail.com"}, function(err, result) {
 
-    console.log("here");
-
-
-
+        if (err) throw err;
+        dat = {
+            firstName: result.first_name,
+            lastName: result.last_name,
+            email: result._id,
+            country: result.country,
+            city: result.city,
+            street: result.street,
+            zipCode: result.zipcode,
+            phone: result.phone,
+          }
+        reso.send(dat);
+    });
 });
+
+
 //getting data from forgot password 
 app.post('/forgot-password', function(req,res){
 
