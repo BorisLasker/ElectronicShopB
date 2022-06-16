@@ -130,7 +130,7 @@ app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
 app.get('/profile', function (req, res) {
-    res.render('prof.ejs',{firstname: "Shahar Almog"});
+    res.render('prof.ejs',{name: "Shahar Almog"});
 })
 
 app.get('/emailsent', function (req, res) {
@@ -154,6 +154,8 @@ app.all('*', (req, res) => {
 
 //getting data from register
 app.post('/register', function(req,res){
+
+    
     var firstname = req.body.FirstName;
     var lastname = req.body.LastName;
     var email = req.body.to;
