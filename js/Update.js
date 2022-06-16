@@ -1,70 +1,59 @@
-function ValidateForm(email,pass,repass){
+function ValidateForm(email, phone, fname, lname, country, city, street, zipcode) {
 
-    var response = grecaptcha.getResponse();
-    if(response.length == 0){
-      alert("Please verify that you are a Human");
-      return false;
-    }
-    
-    var flag= ValidateEmail(email)&&CheckPassword(pass)&&CheckPassMatch(pass,repass);
-    if (flag){ 
-
-      
-        alert('You succeeded!\nPlease check your mail address.');
-
-
-        
-        window.location.href = "login.html";
-        return true;
-    }
+  var mailformat = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  if (email == "" || fname == "" || lname == "" || phone == "" || country == "" || city == "" || street == "" || zipcode == "")
+  {
+    alert("All field should not be empty.");  
     return false;
   }
+  if (!email.match(mailformat)) {
+    alert("You have entered an invalid email address!");    //The pop up alert for an invalid email address
+    return false;
+  }
+  if (phone.value.length != 10) {
+    alert("Phone should be 10 digits length.");
+    return false;
+  }
+  return true;
+}
 
-function CheckPassMatch(pass,repass){
+function CheckPassMatch(pass, repass) {
 
-    if(pass===repass)
-        return true; 
-     alert('The passwords do not match')
-     return false;                                          href="login.html";
+  if (pass === repass)
+    return true;
+  alert('The passwords do not match')
+  return false; href = "login.html";
 
-    
+
 
 }
 
-function CheckPassword(inputtxt) 
-{ 
-  var pass=  /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-  if(inputtxt.match(pass)) 
-  { 
+function CheckPassword(inputtxt) {
+  var pass = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+  if (inputtxt.match(pass)) {
     return true;
   }
-  else
-  { 
+  else {
     alert('Password needs to be:\n-Minimum 6 Characters\n-Must Include an Uppercase Character\n-Must Include an Lowercase Character\n-Must Include a Number\n-Must Include a Special Character')
     return false;
   }
 }
 
-function ValidateEmail(mail)
-{
-  var mailformat =/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-  if(mail.match(mailformat))
-  {
+function ValidateEmail(mail) {
+  var mailformat = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  if (mail.match(mailformat)) {
 
-      return true;
+    return true;
   }
-  else
-  {
+  else {
     alert("You have entered an invalid email address!");    //The pop up alert for an invalid email address
     return false;
   }
 }
 
-function ValidatePassword(pass,repass){
-  var flag= CheckPassword(pass)&&CheckPassMatch(pass,repass);
-  if (flag){ 
-      alert('You succeeded!\nYour password changed!');
-      return true;
-  }
+function ValidatePassword(pass, repass) {
+  var flag = CheckPassword(pass) && CheckPassMatch(pass, repass);
+  if (flag) 
+    return true;
   return false;
 }

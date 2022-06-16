@@ -121,17 +121,17 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a style="color:rgb(214, 214, 231)" class="dropdown-item" href="#">
+                                <a style="color:rgb(214, 214, 231)" class="dropdown-item" href="profile">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a id="AboutBtn" class="dropdown-item" href="#">
+                                <a id="AboutBtn" class="dropdown-item" href="about">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     About
                                 </a>
 
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="login" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -148,65 +148,67 @@
                     <div class="row">
                         <h5 style="color:black; font-weight: bold; margin-left:3%">Profile details</h5>
                     </div>
-                    <form class="user"  id="comment_form" action="/updateProfile" method="post">
-                    <div class="row">
-                        <div class="col-lg-3 mb-3">
-                            <span>First name</span>
-                            <br><input class="form-control form-control-user" type="text" name="firstName" id="firstName"
-                                placeholder="----" value=<%=firstname%>>
+                    <form class="user" id="comment_form" action="/updateProfile" method="post">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3">
+                                <span>First name</span>
+                                <br><input class="form-control form-control-user" type="text" name="firstName"
+                                    id="firstName" placeholder="----" value=<%=firstname%>>
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <span>Last name</span>
+                                <br><input class="form-control form-control-user" type="text" name="lastName"
+                                    id="lastName" placeholder="----" value=<%=lastname%>>
+
+
+                            </div>
+                            <div class="col-lg-3 mb-3">
+
+                                <span>Phone number</span>
+                                <br><input class="form-control form-control-user" type="text" name="phoneNum"
+                                    id="phoneNum" placeholder="----" value=<%=phonenum%>>
+
+                            </div>
+                            <div class="col-lg-3 mb-3">
+
+                                <span>Country</span>
+                                <br><input class="form-control form-control-user" type="text" name="country"
+                                    id="country" placeholder="----" value=<%=country%>>
+                            </div>
                         </div>
 
-                        <div class="col-lg-3 mb-3">
-                            <span>Last name</span>
-                            <br><input class="form-control form-control-user" type="text" name="lastName" id="lastName"
-                                placeholder="----" value=<%=lastname%>>
+                        <!--Secend row-->
+                        <div class="row">
+                            <div class="col-lg-3 mb-3">
+                                <span>E-mail</span>
+                                <br><input class="form-control form-control-user" type="Email" name="email" id="email"
+                                    title="Enter valid email with @, phone, or username" placeholder="----"
+                                    value=<%=email%>>
+                            </div>
 
+                            <div class="col-lg-3 mb-3">
+                                <span>City</span>
+                                <br><input class="form-control form-control-user" type="text" name="city" id="city"
+                                    placeholder="----" value=<%=city%>>
+                            </div>
+                            <div class="col-lg-3 mb-3">
 
+                                <span>Street</span>
+                                <br><input class="form-control form-control-user" type="text" name="street" id="street"
+                                    placeholder="----" value=<%=street%>>
+
+                            </div>
+                            <div class="col-lg-3 mb-3">
+
+                                <span>Zip code</span>
+                                <br><input class="form-control form-control-user" type="text" name="zipCode"
+                                    id="zipCode" placeholder="----" value=<%=zipcode%>>
+                            </div>
+
+                            <button style="margin-left: 94%;" type="submit" class="btn btn-success"
+                                onclick="return ValidateForm(email.value,phoneNum.value,firstName.value,lastName.value,country.value,city.value,street.value,zipCode.value)">Update!</button>
                         </div>
-                        <div class="col-lg-3 mb-3">
-
-                            <span>Phone number</span>
-                            <br><input class="form-control form-control-user" type="text" name="phoneNum" id="phoneNum"
-                                placeholder="----" value=<%=phonenum%>>
-
-                        </div>
-                        <div class="col-lg-3 mb-3">
-
-                            <span>Country</span>
-                            <br><input class="form-control form-control-user" type="text" name="country" id="country"
-                                placeholder="----" value=<%=country%>>
-                        </div>
-                    </div>
-
-                    <!--Secend row-->
-                    <div class="row" >
-                        <div class="col-lg-3 mb-3">
-                            <span>E-mail</span>
-                            <br><input class="form-control form-control-user" type="Email" name="email" id="email"
-                                title="Enter valid email with @, phone, or username" placeholder="----" value=<%=email%>>
-                        </div>
-
-                        <div class="col-lg-3 mb-3">
-                            <span>City</span>
-                            <br><input class="form-control form-control-user" type="text"name="city" id="city" placeholder="----" value=<%=city%>>
-                        </div>
-                        <div class="col-lg-3 mb-3">
-
-                            <span>Street</span>
-                            <br><input class="form-control form-control-user" type="text" name="street" id="street"
-                                placeholder="----" value=<%=street%>>
-
-                        </div>
-                        <div class="col-lg-3 mb-3">
-
-                            <span>Zip code</span>
-                            <br><input class="form-control form-control-user" type="text" name="zipCode" id="zipCode"
-                                placeholder="----" value=<%=zipcode%>>
-                        </div>
-
-                        <button style="margin-left: 94%;" type="submit"
-                            class="btn btn-success">Update!</button> 
-                    </div>
                     </form>
                     <hr class="sidebar-divider">
 
@@ -214,56 +216,41 @@
                     <div class="row">
                         <h5 style="color:black; font-weight: bold; margin-left:3%">Change password</h5>
                     </div>
-                    <div class="row">
+                    <form class="user" id="comment_form" action="/updatePassword" method="post">
+                        <div class="row">
 
-                        <div class="col-lg-6 mb-3">
-                            <span>Old password</span>
-                            <br><input class="form-control form-control-user" type="text" id="oldPass"
-                                title="Enter valid email with @, phone, or username" placeholder="----">
+                            <div class="col-lg-6 mb-3">
+                                <span>Old password</span>
+                                <br><input class="form-control form-control-user" type="password" id="oldPass" name="oldPass"
+                                    title="Enter valid email with @, phone, or username" placeholder="----">
+                            </div>
                         </div>
-                        <div class="col-lg-6 mb-3">
-                            <br><span style="display:none" id="matchPassword" class="invalid">Password must match</span><br><br>
-                            <span id="OneNumber" style="display:none" class="invalid">The password must contain at least one number</span>
+                        <div class="row">
+                            <div class="col-lg-3 mb-3">
+                                <span>New password</span>
+                                <br><input class="form-control form-control-user" type="password" id="password" name="password"
+                                    title="Enter valid email with @, phone, or username" placeholder="----">
+                            </div>
 
-                        </div>
-
-
-                    </div>
-                    <div class="row">
-
-                        <div class="col-lg-3 mb-3">
-                            <span>New password</span>
-                            <br><input onclick="editPasswordProfile()" class="form-control form-control-user"
-                                type="password" id="password" title="Enter valid email with @, phone, or username"
-                                placeholder="----">
-
-                        </div>
-
-                        <div class="col-lg-3 mb-3">
-                            <span>Confirm password</span>
-                            <br><input onclick="comPass()" class="form-control form-control-user" type="password"
-                                id="RePassword" title="Enter valid email with @, phone, or username" placeholder="----">
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <br><span id="6DigitsAtLeast" style="display:none" class="invalid">The password must be at least 6 charecter
-                                long</span>
-
+                            <div class="col-lg-3 mb-3">
+                                <span>Confirm password</span>
+                                <br><input class="form-control form-control-user" type="password" id="repassword"
+                                    title="Enter valid email with @, phone, or username" placeholder="----">
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                            </div>
 
                         </div>
 
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6 mb-3">
-                            <button id="changeBtn" type="button" style="width: 100%;" class="btn btn-dark">Change
-                                password</button>
+                        <div class="row">
+                            <div class="col-lg-6 mb-3">
+                                <button id="" type="submit" style="width: 100%;" class="btn btn-dark"
+                                    onclick="return ValidatePassword(password.value,repassword.value)">Change
+                                    password</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-
-
-
-
 
             </div>
             <!-- End of Main Content -->
@@ -329,7 +316,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
-        <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
@@ -373,7 +360,7 @@
                 //this will be responsible to show  to the user
                 //all of the information about how to put the
                 //right password in
-            
+
 
                 if (!(checkUser())) {
                     $('#successModal').modal('show');
@@ -404,9 +391,9 @@
                 var pass = $('#password').val();
                 var repass = $('#RePassword').val();
                 var lastpass = $('#oldPass').val();
-                $("#matchPassword").css("display","block");
-                $("#6DigitsAtLeast").css("display","block");
-                $("#OneNumber").css("display","block");
+                $("#matchPassword").css("display", "block");
+                $("#6DigitsAtLeast").css("display", "block");
+                $("#OneNumber").css("display", "block");
                 console.log(pass + "  and re  " + repass + " and last  " + lastpass + " and the current  " + user.pass)
                 if (pass != repass || pass == lastpass) {
                     $('#successModal').modal('show');
@@ -414,7 +401,7 @@
                 }
 
                 else if (lastpass != user.pass) {
-                    
+
                     $('#successModal').modal('show');
                     $('#modal1').text("Your old password not match your current password");
                 }
@@ -430,9 +417,9 @@
                         })
                 }
             })
-            $("#password").click(function(){
+            $("#password").click(function () {
                 ne();
-               
+
             })
 
             $("#PcBtn").click(function () {
@@ -454,66 +441,67 @@
                 window.location.href = url;
             })
             $("#dashbordClick").click(function () {
-                
+
                 url = '/dashboard'
                 window.location.href = url;
             })
 
             $("#AboutBtn").click(function () {
-                
+
                 url = '/about'
                 window.location.href = url;
             })
             $("#clickLogout").click(function () {
                 $.post('/remove')
-                    .done(function (data){
-                       
+                    .done(function (data) {
+
                         window.location = '/log-in';
                     })
-                
+
             })
 
             $("#RePassword").click(function () {
-            ne();
-          })
+                ne();
+            })
 
         })
 
 
     </script>
 
-<script>
-    function ne() {
-      var myInput = document.getElementById("password");
-      var myReInput = document.getElementById("RePassword");
-      myInput.onblur = function () {
-        document.getElementById("matchPassword").style.display = "none";
-        document.getElementById("6DigitsAtLeast").style.display = "none";
-        document.getElementById("OneNumber").style.display = "none";
-      }
-      myInput.onfocus = function () {
-        document.getElementById("matchPassword").style.display = "block";
-        document.getElementById("6DigitsAtLeast").style.display = "block";
-        document.getElementById("OneNumber").style.display = "block";
+    <script>
+        function ne() {
+            var myInput = document.getElementById("password");
+            var myReInput = document.getElementById("RePassword");
+            myInput.onblur = function () {
+                document.getElementById("matchPassword").style.display = "none";
+                document.getElementById("6DigitsAtLeast").style.display = "none";
+                document.getElementById("OneNumber").style.display = "none";
+            }
+            myInput.onfocus = function () {
+                document.getElementById("matchPassword").style.display = "block";
+                document.getElementById("6DigitsAtLeast").style.display = "block";
+                document.getElementById("OneNumber").style.display = "block";
 
-      }
-      myReInput.onblur = function () {
-        document.getElementById("matchPassword").style.display = "none";
-        document.getElementById("6DigitsAtLeast").style.display = "none";
-        document.getElementById("OneNumber").style.display = "none";
-      }
-      myReInput.onfocus = function () {
+            }
+            myReInput.onblur = function () {
+                document.getElementById("matchPassword").style.display = "none";
+                document.getElementById("6DigitsAtLeast").style.display = "none";
+                document.getElementById("OneNumber").style.display = "none";
+            }
+            myReInput.onfocus = function () {
 
-        document.getElementById("matchPassword").style.display = "block";
-        document.getElementById("6DigitsAtLeast").style.display = "block";
-        document.getElementById("OneNumber").style.display = "block";
+                document.getElementById("matchPassword").style.display = "block";
+                document.getElementById("6DigitsAtLeast").style.display = "block";
+                document.getElementById("OneNumber").style.display = "block";
 
-      }
-    }
+            }
+        }
 
-  </script>
+    </script>
     <script src="/js/Js.js"></script>
-   
+
+    <script src="js/Update.js"></script>
 
 
 
