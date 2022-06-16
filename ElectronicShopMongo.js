@@ -21,7 +21,8 @@ var bcrypt = require('bcryptjs');
 const urlEncrypt = require('url-encrypt');
 
 const encryptor = urlEncrypt({secretKey: 'some-secret-key'});
-
+var cookieParser = require('cookie-parser');
+app.use(cookieParser())
 rand=Math.floor((Math.random() * 100) + 54);
 
 var passwordChangeEmail; //used for update password
@@ -95,42 +96,78 @@ app.get('/changepassword',function(req,res){
 
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/login.html'));
+    if(req.cookies.Id != undefined){
+        res.sendFile(path.join(__dirname + 'index.ejs',{name: "Shahar Almog"}));
+    }
+    else
+        res.sendFile(path.join(__dirname + '/login.html'));
 })
 
 app.get('/register', function (req, res) {
-    res.sendFile(path.join(__dirname + '/register.html'));
+    if(req.cookies.Id != undefined){
+        res.sendFile(path.join(__dirname + '/404.html'));
+    }
+    else
+        res.sendFile(path.join(__dirname + '/register.html'));
 })
 
 app.get('/forgot-password', function (req, res) {
-    res.sendFile(path.join(__dirname + '/forgot-password.html'));
+    if(req.cookies.Id != undefined){
+        res.sendFile(path.join(__dirname + '/404.html'));
+    }
+    else
+        res.sendFile(path.join(__dirname + '/forgot-password.html'));
 })
 
 app.get('/login', function (req, res) {
-    res.sendFile(path.join(__dirname + '/login.html'));
+    if(req.cookies.Id != undefined){
+        res.sendFile(path.join(__dirname + '/404.html'));
+    }
+    else
+        res.sendFile(path.join(__dirname + '/login.html'));
 })
 
 app.get('/dashboard', function (req, res) {
+    if(req.cookies.Id != undefined){
     res.render('index.ejs',{name: "Shahar Almog"});
+    }
+    else
+        res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.get('/about', function (req, res) {
-    res.render('about.ejs',{name: "Shahar Almog"});
+    if(req.cookies.Id != undefined){
+        res.render('about.ejs',{name: "Shahar Almog"});
+    }
+    else
+        res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.get('/pc', function (req, res) {
+    if(req.cookies.Id != undefined){
     res.render('pc.ejs',{name: "Shahar Almog"});
+    }
+    else
+        res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.get('/cell', function (req, res) {
+    if(req.cookies.Id != undefined){
     res.render('cell.ejs',{name: "Shahar Almog"});
+    }
+    else
+        res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
 app.get('/profile', function (req, res) {
+    if(req.cookies.Id != undefined){
     res.render('prof.ejs',{firstname: "Shahar Almog"});
+    }
+    else
+        res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.get('/emailsent', function (req, res) {
