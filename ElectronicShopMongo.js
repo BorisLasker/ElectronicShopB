@@ -195,6 +195,14 @@ app.post('/updateProfile', function (req, res) {
 
     db.collection("Users").updateOne({ _id: datalogin._id }, { $set: { first_name: firstname, last_name: lastname, email: email, phone: phone, country: country, city: city, street: street, zipcode: zipcode } }, function (err, result) {
         if (err) throw err;
+        datalogin.first_name = firstname;
+        datalogin.last_Name =lastname;
+        datalogin.email= email;
+        datalogin.country = country;
+        datalogin.city= city;
+        datalogin.street = street;
+        datalogin.zipcode=  zipcode;
+        datalogin.phone = phone;
         return res.redirect('/profile');
 
     });
@@ -404,7 +412,21 @@ app.post('/updatePassword', function (req, res) {
                     db.collection("Users").updateOne({ _id: femail }, { $set: { password: hash } }, function (err, res) {
                         if (err) throw err;
                         flag = true;
-                        console.log("check");
+                        mailOptions = {
+                            to: femail,
+                            subject: "Password Updated",
+                            html: "Hello,your password updated successfully."
+                        }
+                        smtpTransport.sendMail(mailOptions, function (error, response) {
+                            if (error) {
+                                console.log(error);
+                                res.end("error");
+                            } else {
+                                passwordChangeEmail = req.body.forgotemail;
+                                console.log("Message sent: " + response.message);
+                                return res.redirect('/profile');
+                            }
+                        });
                     })
                 }
             });
