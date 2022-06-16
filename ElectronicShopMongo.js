@@ -34,7 +34,7 @@ var smtpTransport = nodemailer.createTransport({
     }
 });
 var rand,mailOptions,host,link;
-
+var datalogin;
 
 app.post('/send',function(req,res){
    
@@ -130,7 +130,7 @@ app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
 app.get('/profile', function (req, res) {
-    res.render('prof.ejs',{firstname: "Shahar",lastname: "Almog",phonenum: "123456789",country: "israel",email: "shahar@gmail.com",city:"haifa",street:"sss",zipcode:"12345"});
+    res.render('prof.ejs',{firstname: datalogin.first_name,lastname: datalogin.last_name,phonenum: datalogin.phone,country: datalogin.country,email: datalogin.email,city:datalogin.city,street:datalogin.street,zipcode:datalogin.zipcode});
 })
 
 app.get('/emailsent', function (req, res) {
@@ -147,7 +147,40 @@ app.all('*', (req, res) => {
   });
 
 */
+app.post('/login', function(req,res){
+    var flag = false;
 
+    var email = req.body.Email;
+    var pass = req.body.Pass;
+     //read from data base
+     db.collection("Users").findOne({_id: email}, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        
+
+        if(result){
+
+             bcrypt.compare(pass, result.password, function (err, result1){
+                if(result1)
+                    flag=true;     
+             });
+        }
+        setTimeout(function(){
+            if (flag){
+                 datalogin = result;
+                 return res.redirect('/dashboard');
+
+            }
+            else
+                return res.redirect('/login');
+        }, 1000);
+    
+    });
+
+
+
+
+});
 
 app.post('/updateProfile', function(req,res){
 
