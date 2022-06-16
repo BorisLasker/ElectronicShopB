@@ -104,19 +104,19 @@ app.get('/login', function (req, res) {
 })
 
 app.get('/dashboard', function (req, res) {
-    res.render('index.ejs', { name: "Shahar Almog" });
+    res.render('index.ejs', { name:datalogin.first_name+" "+datalogin.last_name });
 })
 
 app.get('/about', function (req, res) {
-    res.render('about.ejs', { name: "Shahar Almog" });
+    res.render('about.ejs', { name:datalogin.first_name+" "+datalogin.last_name });
 })
 
 app.get('/pc', function (req, res) {
-    res.render('pc.ejs', { name: "Shahar Almog" });
+    res.render('pc.ejs', {name:datalogin.first_name+" "+datalogin.last_name });
 })
 
 app.get('/cell', function (req, res) {
-    res.render('cell.ejs', { name: "Shahar Almog" });
+    res.render('cell.ejs', { name:datalogin.first_name+" "+datalogin.last_name });
 })
 
 app.get('/404', function (req, res) {

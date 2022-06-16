@@ -1,11 +1,15 @@
-function ValidateForm(email,pass,repass){
+function ValidateForm(firstname,lastname,email,pass,repass){
 
     var response = grecaptcha.getResponse();
     if(response.length == 0){
       alert("Please verify that you are a Human");
       return false;
     }
-    
+    if(firstname==""||lastname==""){
+      alert('Please fill your first name and last name');
+      return false;
+
+    }
     var flag= ValidateEmail(email)&&CheckPassword(pass)&&CheckPassMatch(pass,repass);
     if (flag){ 
 
