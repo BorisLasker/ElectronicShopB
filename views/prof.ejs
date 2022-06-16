@@ -2,24 +2,23 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="/css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <title>SB Admin 2 - Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <!-- Custom fonts for this template-->
 
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -32,9 +31,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard">
                 <div class="sidebar-brand-icon rotate-n-15">
+
                     <i class="fas fa-laugh-wink"></i>
+
                 </div>
                 <div class="sidebar-brand-text mx-3">My Webshop</div>
             </a>
@@ -44,7 +45,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a id="dashbordClick" class="nav-link" href="#">
+                <a class="nav-link" href="dashboard">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -52,40 +53,22 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <span style="color:aliceblue; font-weight: bold; font-size: 22px; margin-left:8%">Buy:</span>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                <span>Buy:</span></a>
+            </div>
 
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-
-                <a id="PcBtn" class="nav-link collapsed" href='#'>
-                    <i class="fas fa-laptop"></i>
-                    <span>Pc</span>
-                    <i style="margin-left:68%" class="fas fa-arrow-right"></i>
-                </a>
+            <li class="nav-item active">
+                <a class="nav-link" href="pc">
+                    <i class="fas fa-desktop"></i>
+                    <span>PC</span></a>
             </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-
-
-                <a id="CellBtn" class="nav-link collapsed" href='#'>
-                    <i class="fas fa-mobile-alt"></i>
-                    <span>Cell Phones</span>
-                    <i style="margin-left:42%" class="fas fa-arrow-right"></i>
-                </a>
+            <li class="nav-item active">
+                <a class="nav-link" href="dashboard">
+                    <i class="fas fa-mobile"></i>
+                    <span>Cell Phone</span></a>
             </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-
-
-
-
-
-
-
 
 
         </ul>
@@ -99,15 +82,7 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <a style="margin-top:4%" class="nav-link dropdown-toggle" href="#">
-                            <span id="CellBtn1" style="color:black; font-weight: bold; margin-top:6%"> Buy Cell
-                                Phone</span>
-                        </a>
-                        <!-- Nav Item - Messages -->
-                        <a id="PcBtn1" style="margin-top:4%" class="nav-link dropdown-toggle" href="#">
-                            <span style="color:black; font-weight: bold;">BuyPC</span>
-                        </a>
-
+                    
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -115,8 +90,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="nameOfUser" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
-                                <img class="img-profile rounded-circle" src="/pic/undraw_profile.svg">
+                                <span id="nameOfUser" class="mr-2 d-none d-lg-inline text-gray-600 small"><%=name%></span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

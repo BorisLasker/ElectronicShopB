@@ -123,7 +123,7 @@ app.get('/404', function (req, res) {
     res.sendFile(path.join(__dirname + '/404.html'));
 })
 app.get('/profile', function (req, res) {
-    res.render('prof.ejs', { firstname: datalogin.first_name, lastname: datalogin.last_name, phonenum: datalogin.phone, country: datalogin.country, email: datalogin.email, city: datalogin.city, street: datalogin.street, zipcode: datalogin.zipcode });
+    res.render('prof.ejs', { name:datalogin.first_name+" "+datalogin.last_name,firstname: datalogin.first_name, lastname: datalogin.last_name, phonenum: datalogin.phone, country: datalogin.country, email: datalogin.email, city: datalogin.city, street: datalogin.street, zipcode: datalogin.zipcode });
 })
 
 app.get('/emailsent', function (req, res) {
@@ -184,33 +184,18 @@ app.post('/login', function (req, res) {
 app.post('/updateProfile', function (req, res) {
 
     console.log(req.body.firstName);
-    var firstname;
-    var lastname;
-    var email;
-    var phone;
-    var country;
-    var city;
-    var street;
-    var zipcode;
-    if (req.body.firstName != null)
-        firstname = req.body.firstName;
-    if (req.body.lastName != null)
-        lastname = req.body.lastName;
-    if (req.body.email != null)
-        email = req.body.email;
-    if (req.body.phoneNum != null)
-        phone = req.body.phoneNum;
-    if (req.body.country != null)
-        country = req.body.country;
-    if (req.body.city != null)
-        city = req.body.city;
-    if (req.body.street != null)
-        street = req.body.street;
-    if (req.body.zipCode != null)
-        zipcode = req.body.zipCode;
+    var firstname = req.body.firstName;
+    var lastname = req.body.lastName;
+    var email= req.body.email;
+    var phone= req.body.phoneNum;
+    var country= req.body.country;
+    var city= req.body.city;
+    var street= req.body.street;
+    var zipcode= req.body.zipCode;
 
-    db.collection("Users").updateOne({ _id: "boris.laskerr@gmail.com" }, { $set: { first_name: firstname, last_name: lastname, email: email, phone: phone, country: country, city: city, street: street, zipcode: zipcode } }, function (err, result) {
+    db.collection("Users").updateOne({ _id: datalogin._id }, { $set: { first_name: firstname, last_name: lastname, email: email, phone: phone, country: country, city: city, street: street, zipcode: zipcode } }, function (err, result) {
         if (err) throw err;
+        return res.redirect('/profile');
 
     });
 });
@@ -315,7 +300,7 @@ app.post('/register', function (req, res) {
 });
 
 app.post('/getProfile', async function (req, reso) {
-    db.collection("Users").findOne({ _id: "boris.laskerr@gmail.com" }, function (err, result) {
+    db.collection("Users").findOne({ _id: datalogin._id }, function (err, result) {
 
         if (err) throw err;
         dat = {
@@ -405,7 +390,7 @@ app.post('/changepassword', function (req, res) {
 
 
 app.post('/updatePassword', function (req, res) {
-    var femail = "shakhariko3@gmail.com";
+    var femail = datalogin._id;
     var pass = req.body.password;
     var oldpass = req.body.oldPass;
     var flag = false;
