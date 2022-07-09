@@ -1,6 +1,8 @@
 const express = require("express");
+const http = require("http");
 const app = express();
 var port = process.env.PORT || 8080;
+const server = http.createServer(app);
 var path = require('path');
 const bodyParser = require("body-parser");
 app.use(express.static(__dirname));  //specifies the root directory from which to serve static assets [images, CSS files and JavaScript files]
@@ -442,8 +444,8 @@ app.post('/updatePassword', function (req, res) {
 
 
 });
-
-app.listen(port);
+server.listen(port);
+// app.listen(port);
 console.log('Server started! At http://localhost:' + port);
 
 /*
